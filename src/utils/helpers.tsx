@@ -121,6 +121,6 @@ const getJokesLikedState = (jokes : Joke[ ] ) => {
 
 const getBaseURI = ( ) => {
     return window === undefined ? process.env.NEXT_PUBLIC_DEVELOPMENT_SITE_URL : window.location.origin;
-}
+} 
 
 export { saveJoke, getJokes, createJoke, removeJoke, getJokesLikedState, getBaseURI }
