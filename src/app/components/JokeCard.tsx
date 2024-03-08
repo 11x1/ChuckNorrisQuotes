@@ -5,7 +5,7 @@ import {EJokeSave, Joke} from "@/utils/globals";
 import {getBaseURI, removeJoke, saveJoke} from "@/utils/helpers";
 
 interface JokeCardProps {
-    joke : Joke | string,
+    joke : Joke | string | undefined,
     hasLink : boolean,
     onJokeUpdate : Function;
 }
@@ -16,7 +16,13 @@ export default function JokeCard( { joke, hasLink, onJokeUpdate } : JokeCardProp
         onJokeUpdate( joke );
     }
 
-    const onJokeClick = ( joke : Joke ) => {
+    /**
+     * Sets joke liked/bookmarked state.
+     *
+     * @param { Joke } joke The joke element thats' bookmark icon was clicked.
+     * @return { void }
+     */
+    const onJokeClick = ( joke : Joke ) : void => {
         let doAction : Function = joke.isLiked ? removeJoke : saveJoke;
 
         const joke_state_enum : EJokeSave = doAction( joke );
@@ -36,8 +42,15 @@ export default function JokeCard( { joke, hasLink, onJokeUpdate } : JokeCardProp
                 console.log( `Unknown error occurred when trying to ${ joke.isLiked ? 'remove' : 'save' } the joke.` )
         }
     }
-    const onJokeCopyLinkClick = ( joke : Joke ) => {
-        navigator.clipboard.writeText( `${ getBaseURI( ) }/joke/${ joke.id }` );
+
+    /**
+     * Copies joke url.
+     *
+     * @param { Joke } joke The joke element thats' copy icon was clicked.
+     * @return { void }
+     */
+    const onJokeCopyLinkClick = ( joke : Joke ) : void => {
+        navigator.clipboard.writeText( `${ getBaseURI( ) }/joke/${ joke.id }` ).catch( e => { console.error( e ) /* Proper logging would be useful here */; throw e; } );
     }
 
     return ( <div className={ styles.jokeCard }>

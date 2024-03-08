@@ -8,6 +8,7 @@ import styles from "@/styles/site.module.css";
 import {CiBookmarkMinus, CiBookmarkPlus} from "react-icons/ci";
 import {RiArrowDropLeftLine} from "react-icons/ri";
 import {AiOutlineLoading} from "react-icons/ai";
+import JokeCard from "@/app/components/JokeCard";
 
 export default function Page( { params } : { params : { jokeid : string } } ) {
     const [ joke, setJoke ] = useState< Joke >( );
@@ -54,24 +55,9 @@ export default function Page( { params } : { params : { jokeid : string } } ) {
             </div>
 
             <div className={ styles.jokeList }>
-                <div className={ styles.jokeCard }>
-                    <div className={ `${ styles.jokeCardTextContainer } ${ styles.jokeCardTextContainerSingle }` }>
-                        <p>{ joke === undefined ?
-                            <AiOutlineLoading className={ styles.loadingIcon } />
-                            :
-                            joke.value
-                        }</p>
-                    </div>
-
-                    { joke === undefined ?
-                        <CiBookmarkPlus className={ `${ styles.jokeCardTextContainerSave } ${ styles.icon }` } />
-                        :
-                        joke.isLiked ?
-                        <CiBookmarkMinus className={ `${ styles.jokeCardTextContainerSave } ${ styles.icon }` } onClick={ ( ) => onJokeClick( joke ) } />
-                        :
-                        <CiBookmarkPlus className={ `${ styles.jokeCardTextContainerSave } ${ styles.icon }` } onClick={ ( ) => onJokeClick( joke ) } />
-                    }
-                </div>
+                <JokeCard joke={ joke } hasLink={ false } onJokeUpdate={ ( joke : Joke ) => {
+                    setJoke( getJokesLikedState( [ joke ] )[ 0 ] );
+                } } />
             </div>
         </div>
     )

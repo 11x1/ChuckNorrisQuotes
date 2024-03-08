@@ -3,14 +3,15 @@
 import {useEffect, useState} from "react";
 import {IncomingMessage} from "node:http";
 import https from "https";
-import {EJokeSave, Joke} from "@/utils/globals";
-import {createJoke, getBaseURI, getJokesLikedState, removeJoke, saveJoke} from "@/utils/helpers";
+import {Joke} from "@/utils/globals";
+import {createJoke, getJokesLikedState} from "@/utils/helpers";
 import Link from "next/link";
 
 import styles from '@/styles/site.module.css';
 import {RiQuillPenLine} from "react-icons/ri";
-import {CiBookmark, CiBookmarkMinus, CiBookmarkPlus, CiLink, CiSearch} from "react-icons/ci";
+import {CiBookmark, CiSearch} from "react-icons/ci";
 import {AiOutlineLoading} from "react-icons/ai";
+import JokeCard from "@/app/components/JokeCard";
 
 export default function Page( ) {
     const [ categories, setCategories ] = useState( [ 'random' ] );
@@ -31,7 +32,13 @@ export default function Page( ) {
         fetchJokes( 'random' ).then( ( ) => setIsSearching( false ) );
     }, [ ] );
 
-    const fetchJokes = async ( category : string ) => {
+    /**
+     * Fetches jokes based on category and sets them.
+     *
+     * @param { string } category Joke array to get liked state of.
+     * @return { void }.
+     */
+    const fetchJokes = async ( category : string ) : Promise< void > => {
         let uri = 'https://api.chucknorris.io/jokes/random';
         if ( category !== 'random' )
             uri = `https://api.chucknorris.io/jokes/random?category=${category}`;
@@ -75,7 +82,12 @@ export default function Page( ) {
         setJokes( generatedJokes );
     }
 
-    const onJokeRequest = (  ) => {
+    /**
+     * Search button callback to return jokes base don category.
+     *
+     * @return { void }
+     */
+    const onJokeRequest = (  ) : void => {
         // @ts-ignore, target with id category exists, safely ignoring these errors
         if ( searchedCategory || !isSearching ) {
             setIsSearching( true );
@@ -91,35 +103,13 @@ export default function Page( ) {
             console.error( 'Error getting user specified category.' );
     }
 
-    const onJokeClick = async ( joke : Joke ) => {
-        let doAction : Function = joke.isLiked ? removeJoke : saveJoke;
-
-        const joke_state_enum : EJokeSave = doAction( joke );
-
-        let temp_jokes = jokes;
-
-        switch ( joke_state_enum ) {
-            case EJokeSave.FAILED:
-                console.error( `Failed to ${ joke.isLiked ? 'remove' : 'save' } the joke` );
-                break;
-            case EJokeSave.EXISTS:
-                console.error( `Failed to ${ joke.isLiked ? 'remove' : 'save' } the joke as it already exists in the opposite state.` );
-                break;
-            case EJokeSave.SUCCESS:
-                console.log( `${ joke.isLiked ? 'Removed' : 'Saved' } joke ${ joke.isLiked ? 'from' : 'to' } favourites.` );
-                temp_jokes = getJokesLikedState( jokes );
-                setJokes( temp_jokes );
-                break;
-            default:
-                console.log( `Unknown error occurred when trying to ${ joke.isLiked ? 'remove' : 'save' } the joke.` )
-        }
-    }
-
-    const onJokeCopyLinkClick = ( joke : Joke ) => {
-        navigator.clipboard.writeText( `${ getBaseURI( ) }/joke/${ joke.id }` );
-    }
-
-    const onDropDownClick = ( opt : HTMLElement ) => {
+    /**
+     * Dropdown click callback.
+     *
+     * @param { HTMLElement } opt Clicked option.
+     * @return { void }
+     */
+    const onDropDownClick = ( opt : HTMLElement ) : void => {
         let self = opt.parentElement?.parentElement;
 
         if ( self === null || self === undefined ) {
@@ -178,19 +168,9 @@ export default function Page( ) {
 
             <div className={ styles.jokeList }>
                 { jokes.map( ( joke : Joke ) =>
-                    <div key={ joke.id }  className={ styles.jokeCard }>
-                        <div className={ styles.jokeCardTextContainer }>
-                            <p>{ joke.value }</p>
-                        </div>
-
-                        <CiLink className={ `${ styles.jokeCardLinkContainer } ${ styles.icon }` } onClick={ ( ) => onJokeCopyLinkClick( joke ) }/>
-
-                        { joke.isLiked ?
-                            <CiBookmarkMinus className={ `${ styles.jokeCardTextContainerSave } ${ styles.icon }` } onClick={ ( ) => onJokeClick( joke ) } />
-                            :
-                            <CiBookmarkPlus className={ `${ styles.jokeCardTextContainerSave } ${ styles.icon }` } onClick={ ( ) => onJokeClick( joke ) } />
-                        }
-                    </div> ) }
+                    <JokeCard key={ joke.id } joke={ joke } hasLink={ true } onJokeUpdate={ ( ) => {
+                        setJokes( getJokesLikedState( jokes ) );
+                    } } /> ) }
             </div>
         </div>
     )

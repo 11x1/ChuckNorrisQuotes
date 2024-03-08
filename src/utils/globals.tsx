@@ -1,3 +1,6 @@
+/**
+ * Joke type to have consistent structure throught the project.
+ */
 declare interface Joke {
     icon_url : string,
     id : string,
@@ -6,6 +9,9 @@ declare interface Joke {
     isLiked : boolean
 }
 
+/**
+ * Joke save state enum to easily differentiate between joke saving state return values.
+ */
 enum EJokeSave {
     FAILED = 0,
     SUCCESS = 1,
