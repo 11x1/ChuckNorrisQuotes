@@ -1,0 +1,344 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    max-width: 600px;
+    margin: auto;
+}
+
+.header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: var( --padding );
+
+    height: var( --header-height );
+}
+
+.mobileTitle { display: none; }
+.desktopTitle {
+    display: flex;
+    flex-direction: row;
+
+    all: inherit;
+}
+
+
+@media screen and (max-width: 600px){
+    .header {
+        font-size: 12px !important;
+    }
+
+    .desktopTitle { display: none; }
+    .mobileTitle {
+        display: flex;
+        flex-direction: row;
+        height: var( --header-height );
+        align-items: center;
+        justify-content: center;
+    }
+}
+
+.headerComponentContainer {
+    height: var( --header-height );
+    flex-grow: 1;
+
+    display: grid;
+    gap: var( --padding );
+    grid-template-columns: 1fr var( --header-height-interactive ) var( --header-height-interactive );
+    align-items: center;
+
+    position: relative;
+}
+
+.headerComponentContainer * {
+    border-radius: var( --header-rounding );
+    height: var( --header-height-interactive );
+}
+
+.headerDropdownContainer {
+    min-width: 100%;
+    position: relative;
+    z-index: 9;
+}
+
+.headerDropdown {
+    width: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+
+    background: var( --interaction-bg );
+
+    box-shadow: 0 0 0 1px var( --border-inner ),
+                0 0 0 2px var( --border-outer );
+
+    overflow-y: hidden;
+
+    transition: height 340ms cubic-bezier(.23,.67,0,.98);
+
+    height: var( --header-height-interactive );
+
+    z-index: 9;
+}
+
+.headerDropdown:hover {
+    cursor: pointer;
+}
+
+.headerDropdownOpen {
+    height: var( --height );
+}
+
+.dropdownOption {
+    display: flex;
+    align-items: center;
+    height: var( --header-height-interactive );
+
+    background-color: #fff0;
+    transition: background-color 200ms cubic-bezier(.08,.95,.61,.84);
+}
+
+.dropdownOption p {
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+    align-items: center;
+
+    padding-left: 10px;
+}
+
+.headerSmallButton {
+    width: 100%;
+
+    box-shadow: 0 0 0 1px var( --border-inner ),
+    0 0 0 2px var( --border-outer );
+
+    -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+    -moz-box-sizing: border-box;    /* Firefox, other Gecko */
+    box-sizing: border-box;         /* Opera/IE 8+ */
+
+    padding: 5px;
+
+    background-color: var( --interaction-bg );
+    transition: background-color 200ms cubic-bezier(.08,.95,.61,.84);
+
+    fill: white;
+}
+
+.dropdownOption:hover {
+    background-color: #fff1;
+    cursor: pointer;
+}
+
+.headerSmallButton:hover {
+    background-color: #fff2;
+    cursor: pointer;
+}
+
+.icon {
+    height: 90%;
+    width: auto;
+    aspect-ratio: 2 / 3;
+    cursor: pointer;
+}
+
+.jokeList {
+    display: flex;
+    flex-direction: column;
+    gap: var( --padding );
+
+    z-index: 0;
+}
+
+.jokeCard {
+    position: relative;
+
+    display: flex;
+    width: 100%;
+
+    box-shadow: 0 0 0 1px var( --border-inner ),
+                0 0 0 2px var( --border-outer );
+
+    background-color: var( --interaction-bg );
+
+    justify-content: center;
+    text-align: center;
+}
+
+.jokeCard p {
+    position: relative;
+}
+
+.jokeCard::before, .jokeCard::after {
+    position: absolute;
+    font-size: 62px;
+    opacity: .2;
+}
+
+.jokeCard::before {
+    content: '' open-quote;
+
+    top: 0;
+    left: 2%;
+}
+
+.jokeCard::after {
+    content: '' close-quote;
+    height: 100%;
+    right: 2%;
+    bottom: 0;
+    top: calc( 100% - 50px );
+}
+
+.jokeCardTextContainer {
+    all: inherit;
+
+    width: 100%;
+    height: 100%;
+
+    padding: calc( 2 * var( --padding ) );
+    box-shadow: none;
+    background-color: #fff0;
+
+    -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+    -moz-box-sizing: border-box;    /* Firefox, other Gecko */
+    box-sizing: border-box;         /* Opera/IE 8+ */
+}
+
+/* Cut out right corner for icon, very hack-y */
+.jokeCardTextContainer::before {
+    position: absolute;
+    content: '';
+    background-color: #000;
+
+    width: calc( ( var( --card-save-icon-size ) * 2 + var( --card-save-icon-pad ) * 3 ) );
+    height: calc( var( --card-save-icon-size ) + var( --card-save-icon-pad ) );
+
+    right: 0;
+    top: 0;
+
+    box-shadow: 0 0 0 2px black,
+                -2px 2px 0 1px var( --border-outer ),
+                -3px 3px 0 1px var( --border-inner );
+
+    /*border-left: var( --border-inner ) 1px solid;*/
+    /*border-bottom: var( --border-inner ) 1px solid;*/
+}
+
+.jokeCardTextContainerSingle {
+    all: inherit;
+
+    width: 100%;
+    height: 100%;
+
+    padding: calc( 2 * var( --padding ) );
+    box-shadow: none;
+    background-color: #fff0;
+
+    -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+    -moz-box-sizing: border-box;    /* Firefox, other Gecko */
+    box-sizing: border-box;         /* Opera/IE 8+ */
+}
+
+.jokeCardTextContainerSingle::before {
+    position: absolute;
+    content: '';
+    background-color: #000;
+
+    width: calc( var( --card-save-icon-size ) + var( --card-save-icon-pad ) );
+    height: calc( var( --card-save-icon-size ) + var( --card-save-icon-pad ) );
+
+    right: 0;
+    top: 0;
+
+    box-shadow: 0 0 0 2px black,
+    -2px 2px 0 1px var( --border-outer ),
+    -3px 3px 0 1px var( --border-inner );
+
+    /*border-left: var( --border-inner ) 1px solid;*/
+    /*border-bottom: var( --border-inner ) 1px solid;*/
+}
+
+
+.jokeCardTextContainerSave {
+    position: absolute;
+    content: '';
+
+    width: calc( var( --card-save-icon-size ) - var( --card-save-icon-pad ) );
+    height: calc( var( --card-save-icon-size ) - var( --card-save-icon-pad ) );
+
+    top: 0;
+    right: 0;
+
+    box-shadow: 0 0 0 1px var( --border-inner ),
+    0 0 0 2px var( --border-outer );
+
+    background-color: var( --interaction-bg );
+    transition: background-color 200ms ease-in;
+}
+
+.jokeCardLinkContainer {
+    position: absolute;
+    content: '';
+
+    width: calc( var( --card-save-icon-size ) - var( --card-save-icon-pad ) );
+    height: calc( var( --card-save-icon-size ) - var( --card-save-icon-pad ) );
+
+    top: 0;
+    right: calc( var( --card-save-icon-size ) + var( --card-save-icon-pad ) * 2 );
+
+    box-shadow: 0 0 0 1px var( --border-inner ),
+    0 0 0 2px var( --border-outer );
+
+    background-color: var( --interaction-bg );
+    transition: background-color 200ms ease-in;
+}
+
+.jokeCardTextContainerSave:hover, .jokeCardLinkContainer:hover {
+    background-color: #fff3;
+}
+
+.button {
+    display: flex;
+    flex-direction: row;
+
+    box-shadow: 0 0 0 1px var( --border-inner ),
+                0 0 0 2px var( --border-outer );
+
+    background-color: var( --interaction-bg );
+
+    align-items: center;
+
+    height: var( --header-height-interactive );
+    padding: 0 var( --padding );
+
+    cursor: pointer;
+
+    color: #fff9;
+    text-decoration: none;
+}
+
+.button p {
+    padding: 0 var(--padding) 0 0;
+}
+
+.buttonIcon {
+    height: 100%;
+    width: 40px;
+}
+
+@keyframes rotate {
+    0% {
+        rotate: 0deg;
+    }
+    100% {
+        rotate: 360deg;
+    }
+}
+
+.loadingIcon {
+    width: 100%;
+    height: 100%;
+    animation: infinite rotate 1s;
+}

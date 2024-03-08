@@ -1,0 +1,25 @@
+:root {
+    --header-height: 60px;
+    --padding: 10px;
+    --header-rounding: 2px;
+    --interaction-bg: #111111;
+
+    --border-inner: #2f2f2f;
+    --border-outer: #1a1a1a;
+
+    --header-height-interactive: calc( var( --header-height ) * ( 2 / 3 ) );
+
+    --card-save-icon-size: 30px;
+    --card-save-icon-pad: 2px;
+}
+
+body {
+    background: #000;
+    color: white;
+}
+
+blockquote {
+    border: none;
+    font-family: Georgia, 'Segoe UI';
+    margin-bottom: -30px;
+}
