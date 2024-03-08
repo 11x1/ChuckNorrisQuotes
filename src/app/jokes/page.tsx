@@ -59,23 +59,26 @@ export default function Page( ) {
         }
 
         // todo: there is still a small chance that there are duplicates in the 3 jokes generated after this has run
-        // fix: while loop :)
-        if ( unique_ids.length < generatedJokes.length )
-            for ( let i   = 0; i < generatedJokes.length - 1; i++) {
-                let joke : Joke = generatedJokes[ i ];
+        for ( let i = 0; i < generatedJokes.length - 1; i++) {
+            let joke: Joke = generatedJokes[ i ];
 
-                let index = repeating_ids.indexOf( joke.id )
-                if ( index === -1 )
-                    continue;
+            let index = repeating_ids.indexOf( joke.id )
+            if ( index === -1 )
+                continue;
 
+            let joke_id: string = joke.id;
+
+            while ( unique_ids.includes( joke_id ) ) {
                 // Dealing with a duplicate element
-                await createJoke( uri ).then( ( new_joke : Joke ) => {
+                await createJoke(uri).then((new_joke: Joke) => {
                     generatedJokes[ i ] = new_joke;
                     repeating_ids[ index ] = '';
-
-                    console.log( `Prevented duplicate ${ joke.id } -> ${ new_joke.id }` )
+                    joke_id = new_joke.id;
                 })
             }
+
+            console.log(`Prevented duplicate ${ joke.id } -> ${ joke_id }`)
+        }
 
         generatedJokes = getJokesLikedState( generatedJokes );
 
